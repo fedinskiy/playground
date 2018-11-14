@@ -1,17 +1,8 @@
 public interface RingBuffer<T> {
-	T get();
-	T read();
-	boolean write(T val);
 
-	default boolean add(T test) {
-		return write(test);
-	}
+	boolean add(T test);
 
-	default T element() {
-		return read();
-	}
+	T element();
 
-	default T poll() {
-		return get();
-	}
+	T poll();
 }

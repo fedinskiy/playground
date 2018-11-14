@@ -11,18 +11,18 @@ public class SpaciousRingBuffer<T> implements RingBuffer<T> {
 		this.end = 1;
 	}
 
-	public T read() {
+	public T element() {
 		return hold[start];
 	}
 
-	public T get() {
+	public T poll() {
 		if (end == start) {
 			return null;
 		}
 		return hold[incrementStart()];
 	}
 
-	public boolean write(T val) {
+	public boolean add(T val) {
 		if (getNext(end) == start) return false;
 		hold[end] = val;
 		incrementEnd();

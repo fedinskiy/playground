@@ -13,8 +13,16 @@ public class LengthRingBuffer<T> implements RingBuffer<T> {
 
 	@Override
 	public boolean add(T value) {
-		hold[current + size++] = value;
+		if (size == hold.length) {
+			return false;
+		}
+		hold[getNextIndex()] = value;
 		return true;
+	}
+
+	private int getNextIndex() {
+		int absolute = current + size++;
+		return absolute % hold.length;
 	}
 
 	@Override

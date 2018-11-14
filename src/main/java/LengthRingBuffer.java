@@ -10,9 +10,10 @@ public class LengthRingBuffer<T> implements RingBuffer<T> {
 		this.current = 0;
 		this.size = 0;
 	}
+
 	@Override
 	public boolean add(T value) {
-		hold[current +size]=value;
+		hold[current + size++] = value;
 		return true;
 	}
 

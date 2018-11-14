@@ -5,14 +5,18 @@ public class RingBufferTest {
 
 	@Test
 	public void testGetEmpty() {
-		RingBuffer<String> buffer = new SpaciousRingBuffer<>(1);
+		RingBuffer<String> buffer = getBuffer(1);
 		Assert.assertNull(buffer.element());
 		Assert.assertNull(buffer.poll());
 	}
 
+	private <T> SpaciousRingBuffer<T> getBuffer(int size) {
+		return new SpaciousRingBuffer<>(size);
+	}
+
 	@Test
 	public void testGet() {
-		RingBuffer<String> buffer = new SpaciousRingBuffer<>(1);
+		RingBuffer<String> buffer = getBuffer(1);
 		String test = "some string";
 
 		Assert.assertTrue(buffer.add(test));
@@ -23,7 +27,7 @@ public class RingBufferTest {
 
 	@Test
 	public void testReadAfterEnd() {
-		RingBuffer<String> buffer = new SpaciousRingBuffer<>(1);
+		RingBuffer<String> buffer = getBuffer(1);
 		String test = "some string";
 
 		Assert.assertTrue(buffer.add(test));
@@ -35,7 +39,7 @@ public class RingBufferTest {
 
 	@Test
 	public void testSeveral() {
-		RingBuffer<Integer> buffer = new SpaciousRingBuffer<>(2);
+		RingBuffer<Integer> buffer = getBuffer(2);
 		Integer first = 1;
 		Integer second = 2;
 
@@ -50,7 +54,7 @@ public class RingBufferTest {
 
 	@Test
 	public void testSeveralFromMiddle() {
-		RingBuffer<Integer> buffer = new SpaciousRingBuffer<>(4);
+		RingBuffer<Integer> buffer = getBuffer(4);
 		Integer first = 1;
 		Integer second = 2;
 
@@ -65,7 +69,7 @@ public class RingBufferTest {
 
 	@Test
 	public void testOverflow() {
-		RingBuffer<Integer> buffer = new SpaciousRingBuffer<>(2);
+		RingBuffer<Integer> buffer = getBuffer(2);
 		Integer first = 1;
 		Integer second = 2;
 		Integer third = 3;
@@ -83,7 +87,7 @@ public class RingBufferTest {
 
 	@Test
 	public void testRing() {
-		RingBuffer<Integer> buffer = new SpaciousRingBuffer<>(2);
+		RingBuffer<Integer> buffer = getBuffer(2);
 
 		Integer first = 1;
 		Integer second = 2;

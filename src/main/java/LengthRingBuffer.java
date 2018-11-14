@@ -19,12 +19,31 @@ public class LengthRingBuffer<T> implements RingBuffer<T> {
 
 	@Override
 	public T element() {
-		return hold[current];
+		return empty()?null:hold[current];
 	}
 
 	@Override
 	public T poll() {
-		return hold[current++];
+		return empty()?null:hold[incrementCurrent()];
+	}
+
+	private int getNextCurrent() {
+		int next=current+1;
+		if (next==hold.length){
+			next=0;
+		}
+		return next;
+	}
+
+	public boolean empty(){
+		return size==0;
+	}
+
+	private int incrementCurrent() {
+		int result = this.current;
+		current=getNextCurrent();
+		size--;
+		return result;
 	}
 
 	@Override

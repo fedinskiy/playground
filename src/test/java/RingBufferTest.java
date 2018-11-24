@@ -1,17 +1,47 @@
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
+
+@RunWith(Parameterized.class)
 public class RingBufferTest {
+
+	interface RingBufferProducer {
+		<T> RingBuffer<T> getBuffer(int size);
+	}
+
+	@Parameterized.Parameter
+	public RingBufferProducer bufferFunction;
+
+	@Parameterized.Parameters
+	public static List<RingBufferProducer> getBufferCreator() {
+		Function<Integer, RingBuffer> fun = RingBufferTest::getLengthBuffer;
+		RingBufferProducer lengthProducerFunction = RingBufferTest::getLengthBuffer;
+		RingBufferProducer spaciousProducerFunction = RingBufferTest::getSpaciousBuffer;
+		return Arrays.asList(lengthProducerFunction, spaciousProducerFunction);
+	}
+
+	private <T> RingBuffer<T> getBuffer(int size) {
+		return bufferFunction.getBuffer(size);
+	}
+
+	private static <T> RingBuffer<T> getSpaciousBuffer(int size) {
+		return new SpaciousRingBuffer<>(size);
+	}
+
+	private static <T> RingBuffer<T> getLengthBuffer(int size) {
+		return new LengthRingBuffer<>(size);
+	}
 
 	@Test
 	public void testGetEmpty() {
 		RingBuffer<String> buffer = getBuffer(1);
 		Assert.assertNull(buffer.element());
 		Assert.assertNull(buffer.poll());
-	}
-
-	private <T> SpaciousRingBuffer<T> getBuffer(int size) {
-		return new SpaciousRingBuffer<>(size);
 	}
 
 	@Test
@@ -84,7 +114,6 @@ public class RingBufferTest {
 		Assert.assertEquals(first, buffer.poll());
 		Assert.assertEquals(second, buffer.poll());
 	}
-
 	@Test
 	public void testRing() {
 		RingBuffer<Integer> buffer = getBuffer(2);
@@ -103,4 +132,5 @@ public class RingBufferTest {
 		Assert.assertEquals(second, buffer.poll());
 		Assert.assertEquals(third, buffer.poll());
 	}
+
 }
